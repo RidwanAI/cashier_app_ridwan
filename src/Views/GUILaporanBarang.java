@@ -101,7 +101,7 @@ public class GUILaporanBarang extends javax.swing.JFrame {
             }
 
             // Gunakan File untuk mendapatkan path yang benar
-            File reportFile = new File("src/Views/LaporanDataBarang.jasper");
+            File reportFile = new File("src/Reports/LaporanDataBarang.jasper");
             if (!reportFile.exists()) {
                 JOptionPane.showMessageDialog(this, "File laporan tidak ditemukan!");
                 return;
