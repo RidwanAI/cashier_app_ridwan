@@ -226,7 +226,8 @@ public class GUIDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_settingActionPerformed
 
     private void laporanPenj1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanPenj1ActionPerformed
-        // TODO add your handling code here:
+        this.dispose();
+        new GUILaporanBarang().setVisible(true);
     }//GEN-LAST:event_laporanPenj1ActionPerformed
 
     /**
