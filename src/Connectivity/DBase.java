@@ -1,9 +1,6 @@
 package Connectivity;
 import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.Statement;
 import java.sql.DriverManager;
-import javax.swing.JOptionPane;
 
 public class DBase {
     public static final String URL = "jdbc:mysql://localhost:3306/db_warung";
