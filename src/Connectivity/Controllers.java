@@ -9,6 +9,7 @@ public class Controllers {
     private DefaultTableModel tabelModel;
     private DBase conn;
     private Connection connection;
+    private Models adminModel;
     
     public Controllers() {
         ArrayData = new ArrayList<Models>();
@@ -29,7 +30,13 @@ public class Controllers {
             pst.setString(1, username);
             pst.setString(2, password);
             rs = pst.executeQuery();
-            return rs.next();
+            
+            if (rs.next()) {
+                // Create a Models instance for the admin
+                adminModel = new Models(username, password);
+                return true;
+            }
+            return false;
         } catch (SQLException ex) {
             JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
             return false;
