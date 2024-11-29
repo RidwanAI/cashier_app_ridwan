@@ -54,7 +54,7 @@ public class GUIDashboard extends javax.swing.JFrame {
         logout = new javax.swing.JButton();
         kasir = new javax.swing.JButton();
         laporanPenj = new javax.swing.JButton();
-        laporanPenj1 = new javax.swing.JButton();
+        laporanDataBrg = new javax.swing.JButton();
         jPanel2 = new javax.swing.JPanel();
         author = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
@@ -133,10 +133,10 @@ public class GUIDashboard extends javax.swing.JFrame {
             }
         });
 
-        laporanPenj1.setText("LAPORAN DATA BARANG");
-        laporanPenj1.addActionListener(new java.awt.event.ActionListener() {
+        laporanDataBrg.setText("LAPORAN DATA BARANG");
+        laporanDataBrg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                laporanPenj1ActionPerformed(evt);
+                laporanDataBrgActionPerformed(evt);
             }
         });
 
@@ -176,7 +176,7 @@ public class GUIDashboard extends javax.swing.JFrame {
             .addGroup(layout.createSequentialGroup()
                 .addGap(41, 41, 41)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(laporanPenj1, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(laporanDataBrg, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(stokBrg, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(kasir, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(laporanPenj, javax.swing.GroupLayout.PREFERRED_SIZE, 551, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -194,7 +194,7 @@ public class GUIDashboard extends javax.swing.JFrame {
                 .addGap(40, 40, 40)
                 .addComponent(laporanPenj, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(40, 40, 40)
-                .addComponent(laporanPenj1, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addComponent(laporanDataBrg, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
@@ -225,10 +225,10 @@ public class GUIDashboard extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_settingActionPerformed
 
-    private void laporanPenj1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanPenj1ActionPerformed
+    private void laporanDataBrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanDataBrgActionPerformed
         this.dispose();
-        new GUILaporanBarang().setVisible(true);
-    }//GEN-LAST:event_laporanPenj1ActionPerformed
+        new GUILaporanBarang("dashboard").setVisible(true);
+    }//GEN-LAST:event_laporanDataBrgActionPerformed
 
     /**
      * @param args the command line arguments
@@ -271,8 +271,8 @@ public class GUIDashboard extends javax.swing.JFrame {
     private javax.swing.JPanel jPanel1;
     private javax.swing.JPanel jPanel2;
     private javax.swing.JButton kasir;
+    private javax.swing.JButton laporanDataBrg;
     private javax.swing.JButton laporanPenj;
-    private javax.swing.JButton laporanPenj1;
     private javax.swing.JButton logout;
     private javax.swing.JButton setting;
     private javax.swing.JButton stokBrg;
