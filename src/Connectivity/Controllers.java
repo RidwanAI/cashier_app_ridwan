@@ -32,7 +32,6 @@ public class Controllers {
             rs = pst.executeQuery();
             
             if (rs.next()) {
-                // Create a Models instance for the admin
                 adminModel = new Models(username, password);
                 return true;
             }

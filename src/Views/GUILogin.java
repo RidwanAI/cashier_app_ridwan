@@ -130,7 +130,6 @@ public class GUILogin extends javax.swing.JFrame {
             pw[i] = 0;
         }
         
-        // Validate empty fields
         if (username.isEmpty() || password.isEmpty()) {
             JOptionPane.showMessageDialog(this, 
                 "Username dan Password tidak boleh kosong!", 

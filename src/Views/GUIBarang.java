@@ -37,7 +37,6 @@ public class GUIBarang extends javax.swing.JFrame {
     }
     
     private void setupTableRenderers() {
-        // Renderer untuk kolom Edit
         DefaultTableCellRenderer editRenderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -50,7 +49,6 @@ public class GUIBarang extends javax.swing.JFrame {
             }
         };
 
-        // Renderer untuk kolom Hapus
         DefaultTableCellRenderer deleteRenderer = new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value,
@@ -63,16 +61,13 @@ public class GUIBarang extends javax.swing.JFrame {
             }
         };
 
-        // Terapkan renderer
         tablelist.getColumnModel().getColumn(5).setCellRenderer(editRenderer);
         tablelist.getColumnModel().getColumn(6).setCellRenderer(deleteRenderer);
 
-        // Set header alignment
         DefaultTableCellRenderer headerRenderer = new DefaultTableCellRenderer();
         headerRenderer.setHorizontalAlignment(JLabel.CENTER);
         tablelist.getTableHeader().setDefaultRenderer(headerRenderer);
 
-        // Set header text
         tablelist.getColumnModel().getColumn(5).setHeaderValue("Edit");
         tablelist.getColumnModel().getColumn(6).setHeaderValue("Hapus");
     }
@@ -93,7 +88,7 @@ public class GUIBarang extends javax.swing.JFrame {
                     String stok = tablelist.getValueAt(row, 3).toString();
                     String jenis = tablelist.getValueAt(row, 4).toString();
 
-                    if (column == 5) { // Edit button
+                    if (column == 5) {
                         selectedId = id;
                         idbrg.setText(id);
                         idbrg.setEnabled(false);
@@ -105,7 +100,7 @@ public class GUIBarang extends javax.swing.JFrame {
                         simpan.setText("UPDATE");
                         simpan.setBackground(new Color(255, 255, 0));
                     } 
-                    else if (column == 6) { // Delete button
+                    else if (column == 6) {
                         int confirm = JOptionPane.showConfirmDialog(null, 
                             "Apakah anda yakin ingin menghapus data ini?", 
                             "Konfirmasi Hapus", 
@@ -152,7 +147,7 @@ public class GUIBarang extends javax.swing.JFrame {
         idbrg = new javax.swing.JTextField();
         namabrg = new javax.swing.JTextField();
         hargabrg = new javax.swing.JTextField();
-        jenisbrg = new javax.swing.JComboBox<>();
+        jenisbrg = new javax.swing.JComboBox<String>();
         simpan = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         tablelist = new javax.swing.JTable();
@@ -160,11 +155,12 @@ public class GUIBarang extends javax.swing.JFrame {
         stokbrg = new javax.swing.JTextField();
         jLabel6 = new javax.swing.JLabel();
         back = new javax.swing.JButton();
+        printReport = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setResizable(false);
 
-        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("DATA BARANG");
 
         jLabel2.setText("Id Barang");
@@ -191,7 +187,7 @@ public class GUIBarang extends javax.swing.JFrame {
             }
         });
 
-        jenisbrg.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "Makanan", "Minuman" }));
+        jenisbrg.setModel(new javax.swing.DefaultComboBoxModel(new String[] { "Makanan", "Minuman" }));
         jenisbrg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jenisbrgActionPerformed(evt);
@@ -208,7 +204,6 @@ public class GUIBarang extends javax.swing.JFrame {
 
         tablelist.setAutoCreateRowSorter(true);
         tablelist.setModel(brg.showData());
-        tablelist.setShowGrid(true);
         jScrollPane1.setViewportView(tablelist);
         tablelist.getAccessibleContext().setAccessibleParent(simpan);
 
@@ -224,19 +219,27 @@ public class GUIBarang extends javax.swing.JFrame {
             }
         });
 
+        printReport.setBackground(new java.awt.Color(102, 255, 102));
+        printReport.setText("Cetak Report");
+        printReport.setPreferredSize(new java.awt.Dimension(107, 33));
+        printReport.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                printReportActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(back)
-                        .addGap(185, 185, 185)
-                        .addComponent(jLabel1)
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(246, 246, 246))
                     .addGroup(layout.createSequentialGroup()
+                        .addGap(28, 28, 28)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
                             .addGroup(layout.createSequentialGroup()
@@ -252,20 +255,23 @@ public class GUIBarang extends javax.swing.JFrame {
                                     .addComponent(hargabrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
                                     .addComponent(namabrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
                                     .addComponent(idbrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                                    .addComponent(stokbrg, javax.swing.GroupLayout.Alignment.TRAILING))))
-                        .addGap(28, 28, 28))))
-            .addGroup(layout.createSequentialGroup()
-                .addGap(275, 275, 275)
-                .addComponent(simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+                                    .addComponent(stokbrg, javax.swing.GroupLayout.Alignment.TRAILING)))
+                            .addGroup(layout.createSequentialGroup()
+                                .addComponent(back)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jLabel1)
+                                .addGap(92, 92, 92)
+                                .addComponent(printReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                .addGap(28, 28, 28))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(28, 28, 28)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                    .addComponent(back)
-                    .addComponent(jLabel1))
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
+                    .addComponent(printReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -290,7 +296,7 @@ public class GUIBarang extends javax.swing.JFrame {
                 .addComponent(simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 29, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 438, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(16, Short.MAX_VALUE))
+                .addGap(28, 28, 28))
         );
 
         pack();
@@ -338,6 +344,11 @@ public class GUIBarang extends javax.swing.JFrame {
         this.dispose();
         new GUIDashboard().setVisible(true);
     }//GEN-LAST:event_backActionPerformed
+
+    private void printReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printReportActionPerformed
+        this.dispose();
+        new GUILaporanBarang().setVisible(true);
+    }//GEN-LAST:event_printReportActionPerformed
 
     /**
      * @param args the command line arguments
@@ -390,6 +401,7 @@ public class GUIBarang extends javax.swing.JFrame {
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JComboBox<String> jenisbrg;
     private javax.swing.JTextField namabrg;
+    private javax.swing.JButton printReport;
     private javax.swing.JButton simpan;
     private javax.swing.JTextField stokbrg;
     public javax.swing.JTable tablelist;
