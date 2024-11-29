@@ -17,7 +17,6 @@ import net.sf.jasperreports.view.JasperViewer;
  * @author Muhammad Ridwan 21
  */
 public class GUILaporanBarang extends javax.swing.JFrame {
-
     DBase sql = new DBase();
     /**
      * Creates new form LaporanBarang
