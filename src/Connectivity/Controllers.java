@@ -189,6 +189,142 @@ public class Controllers {
         }
     }
     
+    public boolean isBarangExists(String nama_brg) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT COUNT(*) FROM barang WHERE nama_barang = ?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, nama_brg);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+            return false;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+    
+    public boolean isBarangIDExists(String id_brg) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT COUNT(*) FROM barang WHERE id_barang = ?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, id_brg);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+            return false;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+    
+    public String getBarangIDByName(String nama_brg) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT id_barang FROM barang WHERE nama_barang = ?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, nama_brg);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("id_barang");
+            }
+            return null;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+    
+    public String getBarangNameByID(String id_brg) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT nama_barang FROM barang WHERE id_barang = ?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, id_brg);
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                return rs.getString("nama_barang");
+            }
+            return null;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+    
+    public Models getBarangByIdOrName(String searchTerm) {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT * FROM barang WHERE id_barang = ? OR nama_barang LIKE ?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, searchTerm);
+            ps.setString(2, "%" + searchTerm + "%");
+            rs = ps.executeQuery();
+
+            if (rs.next()) {
+                String id = rs.getString("id_barang");
+                String nama = rs.getString("nama_barang");
+                int harga = rs.getInt("harga_barang");
+                int stok = rs.getInt("stok_barang");
+                String jenis = rs.getString("jenis_barang");
+                return new Models(id, nama, harga, stok, jenis);
+            }
+            return null;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            return null;
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+    
     public DefaultTableModel showData(){
         String[] kolom = {"ID Barang", "Nama Barang", "Harga Barang", "Stok Barang", "Jenis Barang", "", ""};
         Object[][] objData = new Object[ArrayData.size()][6]; 

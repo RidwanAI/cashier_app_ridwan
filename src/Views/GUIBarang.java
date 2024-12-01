@@ -5,11 +5,12 @@
 package Views;
 import Connectivity.Controllers;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
-import java.awt.Component;
-import javax.swing.JOptionPane;
+import java.util.ArrayList;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.table.DefaultTableCellRenderer;
 
@@ -163,7 +164,7 @@ public class GUIBarang extends javax.swing.JFrame {
         jLabel1.setFont(new java.awt.Font("Segoe UI", 1, 24)); // NOI18N
         jLabel1.setText("DATA BARANG");
 
-        jLabel2.setText("Id Barang");
+        jLabel2.setText("ID Barang");
 
         jLabel3.setText("Nama Barang");
 
@@ -233,36 +234,34 @@ public class GUIBarang extends javax.swing.JFrame {
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
                     .addGroup(layout.createSequentialGroup()
-                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(246, 246, 246))
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(jLabel2)
+                            .addComponent(jLabel3)
+                            .addComponent(jLabel4)
+                            .addComponent(jLabel5)
+                            .addComponent(jLabel6))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                            .addComponent(jenisbrg, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                            .addComponent(hargabrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(namabrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(idbrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
+                            .addComponent(stokbrg, javax.swing.GroupLayout.Alignment.TRAILING)))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(28, 28, 28)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
-                            .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE)
-                            .addGroup(layout.createSequentialGroup()
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(jLabel2)
-                                    .addComponent(jLabel3)
-                                    .addComponent(jLabel4)
-                                    .addComponent(jLabel5)
-                                    .addComponent(jLabel6))
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                                    .addComponent(jenisbrg, 0, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                    .addComponent(hargabrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                                    .addComponent(namabrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                                    .addComponent(idbrg, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 128, Short.MAX_VALUE)
-                                    .addComponent(stokbrg, javax.swing.GroupLayout.Alignment.TRAILING)))
-                            .addGroup(layout.createSequentialGroup()
-                                .addComponent(back)
-                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                                .addComponent(jLabel1)
-                                .addGap(92, 92, 92)
-                                .addComponent(printReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))))
+                        .addComponent(back)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(jLabel1)
+                        .addGap(92, 92, 92)
+                        .addComponent(printReport, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(28, 28, 28))
+            .addGroup(layout.createSequentialGroup()
+                .addGap(275, 275, 275)
+                .addComponent(simpan, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -271,7 +270,7 @@ public class GUIBarang extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE)
                     .addComponent(printReport, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -303,25 +302,104 @@ public class GUIBarang extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
+        ArrayList<String> emptyFields = new ArrayList<>();
+
+    if (idbrg.getText().trim().isEmpty()) {
+        emptyFields.add("ID Barang");
+    }
+    if (namabrg.getText().trim().isEmpty()) {
+        emptyFields.add("Nama Barang");
+    }
+    if (hargabrg.getText().trim().isEmpty()) {
+        emptyFields.add("Harga Barang");
+    }
+    if (stokbrg.getText().trim().isEmpty()) {
+        emptyFields.add("Stok Barang");
+    }
+
+    if (!emptyFields.isEmpty()) {
+        StringBuilder errorMessage = new StringBuilder();
+        errorMessage.append("Field ");
+
+        for (int i = 0; i < emptyFields.size(); i++) {
+            if (i == emptyFields.size() - 1 && emptyFields.size() > 1) {
+                errorMessage.append(" dan");
+            }
+            if (i > 0) {
+                errorMessage.append(i == emptyFields.size() - 1 ? " " : ", ");
+            }
+            errorMessage.append(emptyFields.get(i));
+        }
+        errorMessage.append(" Belum diisi");
+
+        JOptionPane.showMessageDialog(
+            null, 
+            errorMessage.toString(), 
+            "Validasi Error", 
+            JOptionPane.WARNING_MESSAGE
+        );
+
+        return;
+    }
+
+    try {
         String id = idbrg.getText();
         String nama = namabrg.getText();
         int harga = Integer.parseInt(hargabrg.getText());
         int stok = Integer.parseInt(stokbrg.getText());
         String jenis = jenisbrg.getSelectedItem().toString();
+
+        // Cek apakah ID sudah ada
+        boolean idExists = brg.isBarangIDExists(id);
         
-        if (isEditing) {
+        // Cek apakah nama barang sudah ada dengan ID yang berbeda
+        String existingIdByName = brg.getBarangIDByName(nama);
+
+        // Kondisi 1: Nama barang sudah ada dengan ID yang berbeda
+        if (existingIdByName != null && !id.equals(existingIdByName)) {
+            JOptionPane.showMessageDialog(
+                null, 
+                "Error: Nama barang sudah ada dengan ID berbeda!\n" +
+                "Nama barang '" + nama + "' sudah terdaftar dengan ID: " + existingIdByName,
+                "Duplikasi Data", 
+                JOptionPane.ERROR_MESSAGE
+            );
+            return;
+        }
+
+        // Kondisi 2: ID sudah ada, tapi nama barang berbeda
+        if (idExists) {
+            String namaBarangExisting = brg.getBarangNameByID(id);
+            if (!nama.equals(namaBarangExisting)) {
+                JOptionPane.showMessageDialog(
+                    null, 
+                    "Error: ID barang sudah ada dengan nama barang berbeda!\n" +
+                    "ID '" + id + "' sudah terdaftar dengan nama: " + namaBarangExisting,
+                    "Duplikasi Data", 
+                    JOptionPane.ERROR_MESSAGE
+                );
+                return;
+            }
+        }
+
+        // Jika lolos validasi, lakukan update atau insert
+        if (idExists) {
             brg.UpdateData(id, nama, harga, stok, jenis);
-            isEditing = false;
-            simpan.setText("SIMPAN");
-            idbrg.setEnabled(true);
         } else {
             brg.InsertData(id, nama, harga, stok, jenis);
         }
-        
+
         tablelist.setModel(brg.showData());
         setupTableRenderers();
         clearForm();
-        
+    } catch (NumberFormatException e) {
+        JOptionPane.showMessageDialog(
+            null, 
+            "Harga atau Stok harus berupa angka!", 
+            "Input Error", 
+            JOptionPane.ERROR_MESSAGE
+        );
+    }        
     }//GEN-LAST:event_simpanActionPerformed
 
     private void idbrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idbrgActionPerformed
