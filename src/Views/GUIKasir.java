@@ -6,7 +6,10 @@ package Views;
 
 import Connectivity.Models;
 import Connectivity.Controllers;
+import Connectivity.Controllers.TransactionItem;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
+import java.util.ArrayList;
 
 /**
  *
@@ -14,17 +17,44 @@ import javax.swing.JOptionPane;
  */
 public class GUIKasir extends javax.swing.JFrame {
 
-    Controllers ctrl = new Controllers();
+    private Controllers ctrl = new Controllers();
+    private ArrayList<TransactionItem> cartItems = new ArrayList<>();
+    private DefaultTableModel cartModel;
+    
     public GUIKasir() {
         initComponents();
         hargabrg.setEnabled(false);
         stokbrg.setEnabled(false);
         jenisbrg.setEnabled(false);
+        
         search.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 searchActionPerformed(evt);
             }
         });
+        
+        String[] columnNames = {"ID Barang", "Nama Barang", "Jumlah", "Harga Satuan", "Total"};
+        cartModel = new DefaultTableModel(columnNames, 0) {
+            @Override
+            public boolean isCellEditable(int row, int column) {
+                return false;
+            }
+        };
+        listBelanja.setModel(cartModel);
+
+        // Add action listeners
+        search.addActionListener(this::searchActionPerformed);
+        tambah.addActionListener(this::tambahActionPerformed);
+        totalhrg.addActionListener(this::totalhrgActionPerformed);
+    }
+    
+    private void clearInputFields() {
+        idbrg.setText("");
+        namabrg.setText("");
+        hargabrg.setText("");
+        stokbrg.setText("");
+        jenisbrg.setText("");
+        qty.setText("");
     }
 
     /**
@@ -54,7 +84,7 @@ public class GUIKasir extends javax.swing.JFrame {
         search = new javax.swing.JButton();
         jScrollPane1 = new javax.swing.JScrollPane();
         listBelanja = new javax.swing.JTable();
-        jButton1 = new javax.swing.JButton();
+        back = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -78,9 +108,19 @@ public class GUIKasir extends javax.swing.JFrame {
         tambah.setMaximumSize(new java.awt.Dimension(125, 30));
         tambah.setMinimumSize(new java.awt.Dimension(125, 30));
         tambah.setPreferredSize(new java.awt.Dimension(125, 30));
+        tambah.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                tambahActionPerformed(evt);
+            }
+        });
 
         totalhrg.setText("Total");
         totalhrg.setPreferredSize(new java.awt.Dimension(61, 30));
+        totalhrg.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                totalhrgActionPerformed(evt);
+            }
+        });
 
         idbrg.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -108,14 +148,11 @@ public class GUIKasir extends javax.swing.JFrame {
         listBelanja.setAutoCreateRowSorter(true);
         jScrollPane1.setViewportView(listBelanja);
 
-        jButton1.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
-        jButton1.setText("<");
-        jButton1.setMaximumSize(new java.awt.Dimension(45, 33));
-        jButton1.setMinimumSize(new java.awt.Dimension(45, 33));
-        jButton1.setPreferredSize(new java.awt.Dimension(45, 33));
-        jButton1.addActionListener(new java.awt.event.ActionListener() {
+        back.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        back.setText("<");
+        back.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jButton1ActionPerformed(evt);
+                backActionPerformed(evt);
             }
         });
 
@@ -155,7 +192,7 @@ public class GUIKasir extends javax.swing.JFrame {
                             .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 577, Short.MAX_VALUE))
                         .addGap(28, 28, 28))
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(jButton1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addComponent(back)
                         .addGap(206, 206, 206)
                         .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(0, 0, Short.MAX_VALUE))))
@@ -166,7 +203,7 @@ public class GUIKasir extends javax.swing.JFrame {
                 .addGap(28, 28, 28)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
+                    .addComponent(back, javax.swing.GroupLayout.DEFAULT_SIZE, 39, Short.MAX_VALUE))
                 .addGap(18, 18, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -222,15 +259,77 @@ public class GUIKasir extends javax.swing.JFrame {
             hargabrg.setText(String.valueOf(foundItem.getHargaBrg()));
             stokbrg.setText(String.valueOf(foundItem.getStokBrg()));
             jenisbrg.setText(foundItem.isJenisBrg());
+            qty.setText("1");
         } else {
             JOptionPane.showMessageDialog(this, "Barang tidak ditemukan");
         }
     }//GEN-LAST:event_searchActionPerformed
 
-    private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
+    private void backActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_backActionPerformed
         this.dispose();
         new GUIDashboard().setVisible(true);
-    }//GEN-LAST:event_jButton1ActionPerformed
+    }//GEN-LAST:event_backActionPerformed
+
+    private void tambahActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_tambahActionPerformed
+        if (idbrg.getText().isEmpty() || qty.getText().isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Pilih barang dan masukkan jumlah terlebih dahulu!");
+            return;
+        }
+
+        try {
+            String idBarang = idbrg.getText();
+            int quantity = Integer.parseInt(qty.getText());
+            
+            // Attempt to reduce stock
+            if (ctrl.reduceStock(idBarang, quantity)) {
+                // Create transaction item
+                TransactionItem item = new TransactionItem(
+                    idBarang, 
+                    namabrg.getText(), 
+                    quantity, 
+                    Integer.parseInt(hargabrg.getText())
+                );
+                
+                // Add to cart
+                cartItems.add(item);
+                
+                // Update cart table
+                cartModel.addRow(new Object[]{
+                    item.getIdBarang(), 
+                    item.getNamaBarang(), 
+                    item.getJumlah(), 
+                    item.getHargaSatuan(), 
+                    item.getTotalHarga()
+                });
+                
+                // Clear input fields
+                clearInputFields();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(this, "Masukkan jumlah barang dengan benar!");
+        }
+    }//GEN-LAST:event_tambahActionPerformed
+
+    private void totalhrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_totalhrgActionPerformed
+        if (cartItems.isEmpty()) {
+            JOptionPane.showMessageDialog(this, "Keranjang belanja kosong!");
+            return;
+        }
+
+        // Save transaction
+        if (ctrl.saveTransaction(cartItems)) {
+            // Calculate total
+            int totalHarga = cartItems.stream()
+                .mapToInt(TransactionItem::getTotalHarga)
+                .sum();
+            
+            JOptionPane.showMessageDialog(this, "Transaksi berhasil disimpan!\nTotal Harga: Rp " + totalHarga);
+            
+            // Clear cart
+            cartItems.clear();
+            cartModel.setRowCount(0);
+        }
+    }//GEN-LAST:event_totalhrgActionPerformed
 
     /**
      * @param args the command line arguments
@@ -268,9 +367,9 @@ public class GUIKasir extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton back;
     private javax.swing.JTextField hargabrg;
     private javax.swing.JTextField idbrg;
-    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
     private javax.swing.JLabel jLabel3;

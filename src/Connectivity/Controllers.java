@@ -355,4 +355,145 @@ public class Controllers {
 
         return tabelModel;
     }
+    
+    public boolean reduceStock(String id_brg, int qty) {
+        PreparedStatement ps = null;
+        try {
+            // First, check if sufficient stock is available
+            Models barang = getBarangByIdOrName(id_brg);
+            if (barang == null || barang.getStokBrg() < qty) {
+                JOptionPane.showMessageDialog(null, "Stok tidak mencukupi!");
+                return false;
+            }
+
+            // Update stock in database
+            String sql = "UPDATE barang SET stok_barang = stok_barang - ? WHERE id_barang = ?";
+            ps = connection.prepareStatement(sql);
+            ps.setInt(1, qty);
+            ps.setString(2, id_brg);
+            ps.executeUpdate();
+
+            // Update local ArrayData
+            for (Models brg : ArrayData) {
+                if (brg.getID().equals(id_brg)) {
+                    brg.setStokBrg(brg.getStokBrg() - qty);
+                    break;
+                }
+            }
+            return true;
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing statement: " + e.getMessage());
+            }
+        }
+    }
+    
+    public boolean saveTransaction(ArrayList<TransactionItem> items) {
+        PreparedStatement psTrx = null;
+        PreparedStatement psTrxDetail = null;
+        ResultSet rs = null;
+        try {
+            // Begin transaction
+            connection.setAutoCommit(false);
+
+            // Generate transaction ID
+            String trxId = generateTransactionId();
+
+            // Insert transaction header
+            String sqlTrx = "INSERT INTO transaksi (id_transaksi, total_harga, tanggal_transaksi) VALUES (?, ?, NOW())";
+            psTrx = connection.prepareStatement(sqlTrx);
+            int totalHarga = items.stream().mapToInt(item -> item.getTotalHarga()).sum();
+            psTrx.setString(1, trxId);
+            psTrx.setInt(2, totalHarga);
+            psTrx.executeUpdate();
+
+            // Insert transaction details
+            String sqlTrxDetail = "INSERT INTO detail_transaksi (id_transaksi, id_barang, nama_barang, jumlah, harga_satuan, total_harga) VALUES (?, ?, ?, ?, ?, ?)";
+            psTrxDetail = connection.prepareStatement(sqlTrxDetail);
+
+            for (TransactionItem item : items) {
+                psTrxDetail.setString(1, trxId);
+                psTrxDetail.setString(2, item.getIdBarang());
+                psTrxDetail.setString(3, item.getNamaBarang());
+                psTrxDetail.setInt(4, item.getJumlah());
+                psTrxDetail.setInt(5, item.getHargaSatuan());
+                psTrxDetail.setInt(6, item.getTotalHarga());
+                psTrxDetail.executeUpdate();
+            }
+
+            // Commit transaction
+            connection.commit();
+            return true;
+        } catch (SQLException e) {
+            try {
+                connection.rollback(); // Rollback in case of error
+            } catch (SQLException rollbackEx) {
+                System.out.println("Error rolling back transaction: " + rollbackEx.getMessage());
+            }
+            JOptionPane.showMessageDialog(null, "Error saving transaction: " + e.getMessage());
+            return false;
+        } finally {
+            try {
+                connection.setAutoCommit(true);
+                if (psTrx != null) psTrx.close();
+                if (psTrxDetail != null) psTrxDetail.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+    
+    private String generateTransactionId() {
+        PreparedStatement ps = null;
+        ResultSet rs = null;
+        try {
+            String sql = "SELECT COALESCE(MAX(CAST(SUBSTRING(id_transaksi, 4) AS UNSIGNED)), 0) + 1 AS next_id FROM transaksi";
+            ps = connection.prepareStatement(sql);
+            rs = ps.executeQuery();
+            
+            if (rs.next()) {
+                int nextId = rs.getInt("next_id");
+                return String.format("TRX%05d", nextId);
+            }
+            return "TRX00001";
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error generating transaction ID: " + e.getMessage());
+            return "TRX00001";
+        } finally {
+            try {
+                if (rs != null) rs.close();
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing resources: " + e.getMessage());
+            }
+        }
+    }
+    
+    public static class TransactionItem {
+        private String idBarang;
+        private String namaBarang;
+        private int jumlah;
+        private int hargaSatuan;
+        private int totalHarga;
+
+        public TransactionItem(String idBarang, String namaBarang, int jumlah, int hargaSatuan) {
+            this.idBarang = idBarang;
+            this.namaBarang = namaBarang;
+            this.jumlah = jumlah;
+            this.hargaSatuan = hargaSatuan;
+            this.totalHarga = jumlah * hargaSatuan;
+        }
+
+        // Getters
+        public String getIdBarang() { return idBarang; }
+        public String getNamaBarang() { return namaBarang; }
+        public int getJumlah() { return jumlah; }
+        public int getHargaSatuan() { return hargaSatuan; }
+        public int getTotalHarga() { return totalHarga; }
+    }
 }
