@@ -76,4 +76,27 @@ public class Models {
                this.password != null && 
                this.password.equals(inputPassword);
     }
+    
+    public static class TransactionItem {
+        private final String idBarang;
+        private final String namaBarang;
+        private final int jumlah;
+        private final int hargaSatuan;
+        private final int totalHarga;
+
+        public TransactionItem(String idBarang, String namaBarang, int jumlah, int hargaSatuan) {
+            this.idBarang = idBarang;
+            this.namaBarang = namaBarang;
+            this.jumlah = jumlah;
+            this.hargaSatuan = hargaSatuan;
+            this.totalHarga = jumlah * hargaSatuan;
+        }
+
+        // Getters
+        public String getIdBarang() { return idBarang; }
+        public String getNamaBarang() { return namaBarang; }
+        public int getJumlah() { return jumlah; }
+        public int getHargaSatuan() { return hargaSatuan; }
+        public int getTotalHarga() { return totalHarga; }
+    }
 }

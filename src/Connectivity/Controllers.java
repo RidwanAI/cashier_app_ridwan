@@ -1,14 +1,15 @@
 package Connectivity;
+import Connectivity.Models.TransactionItem;
 import java.sql.*;
 import java.util.ArrayList;
-import javax.swing.table.DefaultTableModel;
 import javax.swing.JOptionPane;
+import javax.swing.table.DefaultTableModel;
 
 public class Controllers {
-    private ArrayList<Models> ArrayData;
+    private final ArrayList<Models> ArrayData;
     private DefaultTableModel tabelModel;
-    private DBase conn;
-    private Connection connection;
+    private final DBase conn;
+    private final Connection connection;
     private Models adminModel;
     
     public Controllers() {
@@ -92,7 +93,7 @@ public class Controllers {
             
             JOptionPane.showMessageDialog(null, "Data berhasil disimpan!");
         } catch (SQLException e) {
-            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+            
         } finally {
             try {
                 if (ps != null) ps.close();
@@ -105,6 +106,12 @@ public class Controllers {
     public void UpdateData(String id_brg, String nama_brg, int harga_brg, int stok_brg, String jenis_brg) {
         PreparedStatement ps = null;
         try {
+            // Cek apakah data dengan ID tersebut ada
+            if (!isBarangIDExists(id_brg)) {
+                JOptionPane.showMessageDialog(null, "Data barang tidak ditemukan!");
+                return;
+            }
+
             String sql = "UPDATE barang SET nama_barang=?, harga_barang=?, stok_barang=?, jenis_barang=? WHERE id_barang=?";
             ps = connection.prepareStatement(sql);
             ps.setString(1, nama_brg);
@@ -112,19 +119,25 @@ public class Controllers {
             ps.setInt(3, stok_brg);
             ps.setString(4, jenis_brg);
             ps.setString(5, id_brg);
-            ps.executeUpdate();
-            
-            for(Models brg : ArrayData) {
-                if(brg.getID().equals(id_brg)) {
-                    brg.setNamaBrg(nama_brg);
-                    brg.setHargaBrg(harga_brg);
-                    brg.setStokBrg(stok_brg);
-                    brg.setJenisBrg(jenis_brg);
-                    break;
+
+            int rowsAffected = ps.executeUpdate();
+
+            if (rowsAffected > 0) {
+                // Update lokal ArrayData
+                for(Models brg : ArrayData) {
+                    if(brg.getID().equals(id_brg)) {
+                        brg.setNamaBrg(nama_brg);
+                        brg.setHargaBrg(harga_brg);
+                        brg.setStokBrg(stok_brg);
+                        brg.setJenisBrg(jenis_brg);
+                        break;
+                    }
                 }
+
+                JOptionPane.showMessageDialog(null, "Data berhasil diupdate!");
+            } else {
+                JOptionPane.showMessageDialog(null, "Tidak ada data yang diupdate!");
             }
-            
-            JOptionPane.showMessageDialog(null, "Data berhasil diupdate!");
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
         } finally {
@@ -147,6 +160,51 @@ public class Controllers {
             ArrayData.removeIf(brg -> brg.getID().equals(id_brg));
             
             JOptionPane.showMessageDialog(null, "Data berhasil dihapus!");
+        } catch (SQLException e) {
+            JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing statement: " + e.getMessage());
+            }
+        }
+    }
+    
+    public void OnlyInsSpec(String id_brg, String nama_brg, int harga_brg, int stok_brg, String jenis_brg) {
+        PreparedStatement ps = null;
+        try {
+            String sql = "INSERT INTO barang (id_barang, nama_barang, harga_barang, stok_barang, jenis_barang) VALUES (?, ?, ?, ?, ?)";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, id_brg);
+            ps.setString(2, nama_brg);
+            ps.setInt(3, harga_brg);
+            ps.setInt(4, stok_brg);
+            ps.setString(5, jenis_brg);
+            ps.executeUpdate();
+            
+            Models brg = new Models(id_brg, nama_brg, harga_brg, stok_brg, jenis_brg);
+            ArrayData.add(brg);
+        } catch (SQLException e) {
+            
+        } finally {
+            try {
+                if (ps != null) ps.close();
+            } catch (SQLException e) {
+                System.out.println("Error closing statement: " + e.getMessage());
+            }
+        }
+    }
+    
+    public void OnlyDelSpec(String id_brg) {
+        PreparedStatement ps = null;
+        try {
+            String sql = "DELETE FROM barang WHERE id_barang=?";
+            ps = connection.prepareStatement(sql);
+            ps.setString(1, id_brg);
+            ps.executeUpdate();
+            
+            ArrayData.removeIf(brg -> brg.getID().equals(id_brg));
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null, "Error: " + e.getMessage());
         } finally {
@@ -472,28 +530,5 @@ public class Controllers {
                 System.out.println("Error closing resources: " + e.getMessage());
             }
         }
-    }
-    
-    public static class TransactionItem {
-        private String idBarang;
-        private String namaBarang;
-        private int jumlah;
-        private int hargaSatuan;
-        private int totalHarga;
-
-        public TransactionItem(String idBarang, String namaBarang, int jumlah, int hargaSatuan) {
-            this.idBarang = idBarang;
-            this.namaBarang = namaBarang;
-            this.jumlah = jumlah;
-            this.hargaSatuan = hargaSatuan;
-            this.totalHarga = jumlah * hargaSatuan;
-        }
-
-        // Getters
-        public String getIdBarang() { return idBarang; }
-        public String getNamaBarang() { return namaBarang; }
-        public int getJumlah() { return jumlah; }
-        public int getHargaSatuan() { return hargaSatuan; }
-        public int getTotalHarga() { return totalHarga; }
     }
 }

@@ -302,104 +302,133 @@ public class GUIBarang extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void simpanActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_simpanActionPerformed
-        ArrayList<String> emptyFields = new ArrayList<>();
-
-    if (idbrg.getText().trim().isEmpty()) {
-        emptyFields.add("ID Barang");
-    }
-    if (namabrg.getText().trim().isEmpty()) {
-        emptyFields.add("Nama Barang");
-    }
-    if (hargabrg.getText().trim().isEmpty()) {
-        emptyFields.add("Harga Barang");
-    }
-    if (stokbrg.getText().trim().isEmpty()) {
-        emptyFields.add("Stok Barang");
-    }
-
-    if (!emptyFields.isEmpty()) {
-        StringBuilder errorMessage = new StringBuilder();
-        errorMessage.append("Field ");
-
-        for (int i = 0; i < emptyFields.size(); i++) {
-            if (i == emptyFields.size() - 1 && emptyFields.size() > 1) {
-                errorMessage.append(" dan");
-            }
-            if (i > 0) {
-                errorMessage.append(i == emptyFields.size() - 1 ? " " : ", ");
-            }
-            errorMessage.append(emptyFields.get(i));
-        }
-        errorMessage.append(" Belum diisi");
-
-        JOptionPane.showMessageDialog(
-            null, 
-            errorMessage.toString(), 
-            "Validasi Error", 
-            JOptionPane.WARNING_MESSAGE
-        );
-
-        return;
-    }
-
-    try {
         String id = idbrg.getText();
         String nama = namabrg.getText();
         int harga = Integer.parseInt(hargabrg.getText());
         int stok = Integer.parseInt(stokbrg.getText());
         String jenis = jenisbrg.getSelectedItem().toString();
+        ArrayList<String> emptyFields = new ArrayList<>();
 
-        // Cek apakah ID sudah ada
-        boolean idExists = brg.isBarangIDExists(id);
-        
-        // Cek apakah nama barang sudah ada dengan ID yang berbeda
-        String existingIdByName = brg.getBarangIDByName(nama);
-
-        // Kondisi 1: Nama barang sudah ada dengan ID yang berbeda
-        if (existingIdByName != null && !id.equals(existingIdByName)) {
-            JOptionPane.showMessageDialog(
-                null, 
-                "Error: Nama barang sudah ada dengan ID berbeda!\n" +
-                "Nama barang '" + nama + "' sudah terdaftar dengan ID: " + existingIdByName,
-                "Duplikasi Data", 
-                JOptionPane.ERROR_MESSAGE
-            );
-            return;
+        if (idbrg.getText().trim().isEmpty()) {
+            emptyFields.add("ID Barang");
+        }
+        if (namabrg.getText().trim().isEmpty()) {
+            emptyFields.add("Nama Barang");
+        }
+        if (hargabrg.getText().trim().isEmpty()) {
+            emptyFields.add("Harga Barang");
+        }
+        if (stokbrg.getText().trim().isEmpty()) {
+            emptyFields.add("Stok Barang");
         }
 
-        // Kondisi 2: ID sudah ada, tapi nama barang berbeda
-        if (idExists) {
-            String namaBarangExisting = brg.getBarangNameByID(id);
-            if (!nama.equals(namaBarangExisting)) {
+        if (!emptyFields.isEmpty()) {
+            StringBuilder errorMessage = new StringBuilder();
+            errorMessage.append("Field ");
+
+            for (int i = 0; i < emptyFields.size(); i++) {
+                if (i == emptyFields.size() - 1 && emptyFields.size() > 1) {
+                    errorMessage.append(" dan");
+                }
+                if (i > 0) {
+                    errorMessage.append(i == emptyFields.size() - 1 ? " " : ", ");
+                }
+                errorMessage.append(emptyFields.get(i));
+            }
+            errorMessage.append(" Belum diisi");
+
+            JOptionPane.showMessageDialog(
+                null, 
+                errorMessage.toString(), 
+                "Validasi Error", 
+                JOptionPane.WARNING_MESSAGE
+            );
+
+            return;
+        }
+        
+        if (isEditing) {
+            // Pastikan ID yang sedang diedit adalah ID yang sama
+            if (id.equals(selectedId)) {
+                brg.UpdateData(id, nama, harga, stok, jenis);
+                isEditing = false;
+                simpan.setText("SIMPAN");
+                tablelist.setModel(brg.showData());
+                setupTableRenderers();
+                clearForm();
+            } else {
                 JOptionPane.showMessageDialog(
                     null, 
-                    "Error: ID barang sudah ada dengan nama barang berbeda!\n" +
-                    "ID '" + id + "' sudah terdaftar dengan nama: " + namaBarangExisting,
+                    "Error: ID barang tidak sesuai!", 
+                    "Validasi Error", 
+                    JOptionPane.ERROR_MESSAGE
+                );
+            }
+            return; // Langsung keluar, jangan lanjut ke blok try
+        }
+
+        try {
+            // Cek apakah ID sudah ada
+            boolean idExists = brg.isBarangIDExists(id);
+
+            // Cek apakah nama barang sudah ada dengan ID yang berbeda
+            String existingIdByName = brg.getBarangIDByName(nama);
+
+            // Kondisi 1: Nama barang sudah ada dengan ID yang berbeda
+            if (existingIdByName != null && !id.equals(existingIdByName)) {
+                JOptionPane.showMessageDialog(
+                    null, 
+                    "Error: Nama barang sudah ada dengan ID berbeda!\n" +
+                    "Nama barang '" + nama + "' sudah terdaftar dengan ID: " + existingIdByName,
                     "Duplikasi Data", 
                     JOptionPane.ERROR_MESSAGE
                 );
                 return;
             }
-        }
 
-        // Jika lolos validasi, lakukan update atau insert
-        if (idExists) {
-            brg.UpdateData(id, nama, harga, stok, jenis);
-        } else {
-            brg.InsertData(id, nama, harga, stok, jenis);
-        }
+            // Kondisi 2: ID sudah ada, tapi nama barang berbeda
+            if (idExists) {
+                String namaBarangExisting = brg.getBarangNameByID(id);
+                if (!nama.equals(namaBarangExisting)) {
+                    JOptionPane.showMessageDialog(
+                        null, 
+                        "Error: ID barang sudah ada dengan nama barang berbeda!\n" +
+                        "ID '" + id + "' sudah terdaftar dengan nama: " + namaBarangExisting,
+                        "Duplikasi Data", 
+                        JOptionPane.ERROR_MESSAGE
+                    );
+                    return;
+                }
+            }
 
-        tablelist.setModel(brg.showData());
-        setupTableRenderers();
-        clearForm();
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(
-            null, 
-            "Harga atau Stok harus berupa angka!", 
-            "Input Error", 
-            JOptionPane.ERROR_MESSAGE
-        );
-    }        
+            // Jika lolos validasi, lakukan update atau insert
+            if (idExists) {
+                int confirm = JOptionPane.showConfirmDialog(null,
+                        "Barang ini sudah ada dalam database, apakah anda ingin menimpanya?",
+                        "Duplikasi Data",
+                        JOptionPane.YES_NO_OPTION);
+
+                if (confirm == JOptionPane.YES_OPTION) {
+                    brg.OnlyDelSpec(id);
+                    brg.OnlyInsSpec(id, nama, harga, stok, jenis);
+                    tablelist.setModel(brg.showData());
+                    setupTableRenderers();
+                    clearForm();
+                }           
+            } else {
+                brg.InsertData(id, nama, harga, stok, jenis);
+                tablelist.setModel(brg.showData());
+                setupTableRenderers();
+                clearForm();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(
+                null, 
+                "Harga atau Stok harus berupa angka!", 
+                "Input Error", 
+                JOptionPane.ERROR_MESSAGE
+            );
+        }        
     }//GEN-LAST:event_simpanActionPerformed
 
     private void idbrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_idbrgActionPerformed

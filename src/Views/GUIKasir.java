@@ -6,7 +6,7 @@ package Views;
 
 import Connectivity.Models;
 import Connectivity.Controllers;
-import Connectivity.Controllers.TransactionItem;
+import Connectivity.Models.TransactionItem;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;
