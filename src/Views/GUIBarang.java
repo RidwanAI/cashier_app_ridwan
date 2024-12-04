@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Views;
-import Connectivity.Controllers;
+import Controllers.Controllers;
 import java.awt.Color;
 import java.awt.Component;
 import java.awt.event.MouseAdapter;
@@ -454,7 +454,7 @@ public class GUIBarang extends javax.swing.JFrame {
 
     private void printReportActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_printReportActionPerformed
         this.dispose();
-        new GUILaporanBarang("barang").setVisible(true);
+        new GUILaporanDataBarang("barang").setVisible(true);
     }//GEN-LAST:event_printReportActionPerformed
 
     /**

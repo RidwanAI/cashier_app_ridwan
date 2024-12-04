@@ -1,5 +1,7 @@
-package Connectivity;
-import Connectivity.Models.TransactionItem;
+package Controllers;
+import Databases.DBase;
+import Models.Models;
+import Models.Models.TransactionItem;
 import java.sql.*;
 import java.util.ArrayList;
 import javax.swing.JOptionPane;
@@ -38,7 +40,9 @@ public class Controllers {
             }
             return false;
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Database error: " 
+                    + ex.getMessage(), "Error", 
+                    JOptionPane.ERROR_MESSAGE);
             return false;
         } finally {
             try {
@@ -64,7 +68,9 @@ public class Controllers {
                 usrnm = rs.getString("username");
             }
         } catch (SQLException ex) {
-            JOptionPane.showMessageDialog(null, "Database error: " + ex.getMessage(), "error", JOptionPane.ERROR_MESSAGE);
+            JOptionPane.showMessageDialog(null, "Database error: " 
+                    + ex.getMessage(), "error", 
+                    JOptionPane.ERROR_MESSAGE);
         } finally {
             try {
                 if (rs != null) rs.close();
@@ -462,12 +468,16 @@ public class Controllers {
             // Generate transaction ID
             String trxId = generateTransactionId();
 
+            // Prompt user to select payment method
+            String paymentMethod = promptPaymentMethod();
+
             // Insert transaction header
-            String sqlTrx = "INSERT INTO transaksi (id_transaksi, total_harga, tanggal_transaksi) VALUES (?, ?, NOW())";
+            String sqlTrx = "INSERT INTO transaksi (id_transaksi, total_harga, tanggal_transaksi, metode_pembayaran) VALUES (?, ?, NOW(), ?)";
             psTrx = connection.prepareStatement(sqlTrx);
             int totalHarga = items.stream().mapToInt(item -> item.getTotalHarga()).sum();
             psTrx.setString(1, trxId);
             psTrx.setInt(2, totalHarga);
+            psTrx.setString(3, paymentMethod);
             psTrx.executeUpdate();
 
             // Insert transaction details
@@ -504,6 +514,12 @@ public class Controllers {
                 System.out.println("Error closing resources: " + e.getMessage());
             }
         }
+    }
+    
+    private String promptPaymentMethod() {
+        Object[] options = {"Cash", "QRIS", "M-Banking", "Dana"};
+        int choice = JOptionPane.showOptionDialog(null, "Pilih metode pembayaran:", "Pembayaran", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        return (String) options[choice];
     }
     
     private String generateTransactionId() {

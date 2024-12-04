@@ -4,9 +4,9 @@
  */
 package Views;
 
-import Connectivity.Models;
-import Connectivity.Controllers;
-import Connectivity.Models.TransactionItem;
+import Models.Models;
+import Controllers.Controllers;
+import Models.Models.TransactionItem;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import java.util.ArrayList;

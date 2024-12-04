@@ -3,7 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Views;
-import Connectivity.Controllers;
+import Controllers.Controllers;
 import javax.swing.JOptionPane;
 
 /**
@@ -11,19 +11,17 @@ import javax.swing.JOptionPane;
  * @author Muhammad Ridwan 21
  */
 public class GUILogin extends javax.swing.JFrame {
-    private final Controllers brg = new Controllers();
-    private final Controllers ctrl;
+    private final Controllers ctrl = new Controllers();
     
     public GUILogin() {
         initComponents();
-        ctrl = new Controllers();
     }
     
     @Override
     public void dispose() {
         super.dispose();
-        if (brg != null) {
-            brg.closeConnection();
+        if (ctrl != null) {
+            ctrl.closeConnection();
         }
     }
 

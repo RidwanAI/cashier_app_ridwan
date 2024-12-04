@@ -8,6 +8,7 @@ import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.net.URI;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -35,7 +36,7 @@ public class GUIDashboard extends javax.swing.JFrame {
     }
     
     public void getAdmin(String usrnm) {
-        user.setText(usrnm);
+        user.setText("Hello, " + usrnm);
     }
 
     /**
@@ -100,8 +101,8 @@ public class GUIDashboard extends javax.swing.JFrame {
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGap(41, 41, 41)
-                .addComponent(user, javax.swing.GroupLayout.PREFERRED_SIZE, 185, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(user, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGap(18, 18, 18)
                 .addComponent(setting, javax.swing.GroupLayout.PREFERRED_SIZE, 82, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(logout)
@@ -187,15 +188,15 @@ public class GUIDashboard extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(41, 41, 41)
                 .addComponent(stokBrg, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(41, 41, 41)
                 .addComponent(kasir, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(41, 41, 41)
                 .addComponent(laporanPenj, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(40, 40, 40)
+                .addGap(41, 41, 41)
                 .addComponent(laporanDataBrg, javax.swing.GroupLayout.PREFERRED_SIZE, 75, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 155, Short.MAX_VALUE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 151, Short.MAX_VALUE)
                 .addComponent(jPanel2, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
 
@@ -210,10 +211,24 @@ public class GUIDashboard extends javax.swing.JFrame {
     private void kasirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_kasirActionPerformed
         this.dispose();
         new GUIKasir().setVisible(true);
+        JOptionPane.showMessageDialog(null, 
+                "WARNING: Fitur ini masih dalam pengembangan, masih terdapat bug yang mungkin terjadi", 
+                "Kendala Teknis",
+                JOptionPane.WARNING_MESSAGE);
     }//GEN-LAST:event_kasirActionPerformed
 
     private void laporanPenjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanPenjActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        GUILaporanPenjualan guiLaporan = new GUILaporanPenjualan();
+        guiLaporan.setVisible(true);
+        guiLaporan.dispose();
+        this.setVisible(true);
+        JOptionPane.showMessageDialog(
+                null,
+                "404 (NOT FOUND): Fitur ini masih belum dibuat!",
+                "404",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }//GEN-LAST:event_laporanPenjActionPerformed
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
@@ -222,12 +237,22 @@ public class GUIDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_logoutActionPerformed
 
     private void settingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingActionPerformed
-        // TODO add your handling code here:
+        this.setVisible(false);
+        GUISettingAkun setting = new GUISettingAkun();
+        setting.setVisible(true);
+        setting.dispose();
+        this.setVisible(true);
+        JOptionPane.showMessageDialog(
+                null,
+                "404 (NOT FOUND): Fitur ini masih belum dibuat!",
+                "404",
+                JOptionPane.INFORMATION_MESSAGE
+        );
     }//GEN-LAST:event_settingActionPerformed
 
     private void laporanDataBrgActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanDataBrgActionPerformed
         this.dispose();
-        new GUILaporanBarang("dashboard").setVisible(true);
+        new GUILaporanDataBarang("dashboard").setVisible(true);
     }//GEN-LAST:event_laporanDataBrgActionPerformed
 
     /**
