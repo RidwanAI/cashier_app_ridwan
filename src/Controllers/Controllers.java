@@ -518,7 +518,10 @@ public class Controllers {
     
     private String promptPaymentMethod() {
         Object[] options = {"Cash", "QRIS", "M-Banking", "Dana"};
-        int choice = JOptionPane.showOptionDialog(null, "Pilih metode pembayaran:", "Pembayaran", JOptionPane.DEFAULT_OPTION, JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
+        int choice = JOptionPane.showOptionDialog(null, 
+                "Pilih metode pembayaran:", "Pembayaran", 
+                JOptionPane.DEFAULT_OPTION, 
+                JOptionPane.QUESTION_MESSAGE, null, options, options[0]);
         return (String) options[choice];
     }
     

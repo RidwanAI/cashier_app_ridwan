@@ -4,6 +4,7 @@
  */
 package Views;
 
+import Controllers.Controllers;
 import javax.swing.JOptionPane;
 import Databases.DBase;
 import java.io.File;
@@ -18,6 +19,7 @@ import net.sf.jasperreports.view.JasperViewer;
  */
 public class GUILaporanDataBarang extends javax.swing.JFrame {
     DBase sql = new DBase();
+    private Controllers ctrl = new Controllers();
     private String source;
     /**
      * Creates new form LaporanBarang
@@ -25,6 +27,14 @@ public class GUILaporanDataBarang extends javax.swing.JFrame {
     public GUILaporanDataBarang(String source) {
         this.source = source;
         initComponents();
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (ctrl != null) {
+            ctrl.closeConnection();
+        }
     }
 
     /**

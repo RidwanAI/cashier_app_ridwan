@@ -3,6 +3,7 @@
  * Click nbfs://nbhost/SystemFileSystem/Templates/GUIForms/JFrame.java to edit this template
  */
 package Views;
+import Controllers.Controllers;
 import java.awt.Desktop;
 import java.awt.Cursor;
 import java.awt.event.MouseAdapter;
@@ -15,10 +16,19 @@ import javax.swing.JOptionPane;
  * @author Muhammad Ridwan 21
  */
 public class GUIDashboard extends javax.swing.JFrame {
+    private final Controllers ctrl = new Controllers();
 
     public GUIDashboard() {
         initComponents();
         author();
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (ctrl != null) {
+            ctrl.closeConnection();
+        }
     }
     
     public void author() {
@@ -219,9 +229,9 @@ public class GUIDashboard extends javax.swing.JFrame {
 
     private void laporanPenjActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_laporanPenjActionPerformed
         this.setVisible(false);
-        GUILaporanPenjualan guiLaporan = new GUILaporanPenjualan();
-        guiLaporan.setVisible(true);
-        guiLaporan.dispose();
+        GUILaporanPenjualan lapPenj = new GUILaporanPenjualan();
+        lapPenj.setVisible(true);
+        lapPenj.dispose();
         this.setVisible(true);
         JOptionPane.showMessageDialog(
                 null,
@@ -232,8 +242,13 @@ public class GUIDashboard extends javax.swing.JFrame {
     }//GEN-LAST:event_laporanPenjActionPerformed
 
     private void logoutActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_logoutActionPerformed
-        this.dispose();
-        new GUILogin().setVisible(true);
+        int confirm = JOptionPane.showConfirmDialog(null, 
+                "Apakah anda ingin benar-benar logout?", 
+                "Peringatan Logout", JOptionPane.YES_NO_OPTION);
+        if (confirm == JOptionPane.YES_OPTION) {
+            this.dispose();
+            new GUILogin().setVisible(true);
+        }
     }//GEN-LAST:event_logoutActionPerformed
 
     private void settingActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_settingActionPerformed

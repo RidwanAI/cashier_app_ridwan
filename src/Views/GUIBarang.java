@@ -18,12 +18,12 @@ public class GUIBarang extends javax.swing.JFrame {
     private String selectedId = "";
     private boolean isEditing = false;
     
-    private final Controllers brg = new Controllers();
+    private final Controllers ctrl = new Controllers();
     
     public GUIBarang() {
         initComponents();
-        brg.LoadData();
-        tablelist.setModel(brg.showData());
+        ctrl.LoadData();
+        tablelist.setModel(ctrl.showData());
         setupTableRenderers();
         setupTableListener();
         simpan.setText("SIMPAN");
@@ -32,8 +32,8 @@ public class GUIBarang extends javax.swing.JFrame {
     @Override
     public void dispose() {
         super.dispose();
-        if (brg != null) {
-            brg.closeConnection();
+        if (ctrl != null) {
+            ctrl.closeConnection();
         }
     }
     
@@ -108,8 +108,8 @@ public class GUIBarang extends javax.swing.JFrame {
                             JOptionPane.YES_NO_OPTION);
 
                         if (confirm == JOptionPane.YES_OPTION) {
-                            brg.DeleteData(id);
-                            tablelist.setModel(brg.showData());
+                            ctrl.DeleteData(id);
+                            tablelist.setModel(ctrl.showData());
                             setupTableRenderers();
                             clearForm();
                         }
@@ -204,7 +204,7 @@ public class GUIBarang extends javax.swing.JFrame {
         });
 
         tablelist.setAutoCreateRowSorter(true);
-        tablelist.setModel(brg.showData());
+        tablelist.setModel(ctrl.showData());
         jScrollPane1.setViewportView(tablelist);
         tablelist.getAccessibleContext().setAccessibleParent(simpan);
 
@@ -350,10 +350,10 @@ public class GUIBarang extends javax.swing.JFrame {
         if (isEditing) {
             // Pastikan ID yang sedang diedit adalah ID yang sama
             if (id.equals(selectedId)) {
-                brg.UpdateData(id, nama, harga, stok, jenis);
+                ctrl.UpdateData(id, nama, harga, stok, jenis);
                 isEditing = false;
                 simpan.setText("SIMPAN");
-                tablelist.setModel(brg.showData());
+                tablelist.setModel(ctrl.showData());
                 setupTableRenderers();
                 clearForm();
             } else {
@@ -369,10 +369,10 @@ public class GUIBarang extends javax.swing.JFrame {
 
         try {
             // Cek apakah ID sudah ada
-            boolean idExists = brg.isBarangIDExists(id);
+            boolean idExists = ctrl.isBarangIDExists(id);
 
             // Cek apakah nama barang sudah ada dengan ID yang berbeda
-            String existingIdByName = brg.getBarangIDByName(nama);
+            String existingIdByName = ctrl.getBarangIDByName(nama);
 
             // Kondisi 1: Nama barang sudah ada dengan ID yang berbeda
             if (existingIdByName != null && !id.equals(existingIdByName)) {
@@ -388,7 +388,7 @@ public class GUIBarang extends javax.swing.JFrame {
 
             // Kondisi 2: ID sudah ada, tapi nama barang berbeda
             if (idExists) {
-                String namaBarangExisting = brg.getBarangNameByID(id);
+                String namaBarangExisting = ctrl.getBarangNameByID(id);
                 if (!nama.equals(namaBarangExisting)) {
                     JOptionPane.showMessageDialog(
                         null, 
@@ -409,15 +409,15 @@ public class GUIBarang extends javax.swing.JFrame {
                         JOptionPane.YES_NO_OPTION);
 
                 if (confirm == JOptionPane.YES_OPTION) {
-                    brg.OnlyDelSpec(id);
-                    brg.OnlyInsSpec(id, nama, harga, stok, jenis);
-                    tablelist.setModel(brg.showData());
+                    ctrl.OnlyDelSpec(id);
+                    ctrl.OnlyInsSpec(id, nama, harga, stok, jenis);
+                    tablelist.setModel(ctrl.showData());
                     setupTableRenderers();
                     clearForm();
                 }           
             } else {
-                brg.InsertData(id, nama, harga, stok, jenis);
-                tablelist.setModel(brg.showData());
+                ctrl.InsertData(id, nama, harga, stok, jenis);
+                tablelist.setModel(ctrl.showData());
                 setupTableRenderers();
                 clearForm();
             }

@@ -6,17 +6,28 @@
 
 package Views;
 
+import Controllers.Controllers;
+
 /**
  *
  * @author Muhammad Ridwan 21
  */
 public class GUILaporanPenjualan extends javax.swing.JFrame {
+    private Controllers ctrl = new Controllers();
 
     /**
      * Creates new form GUILaporanPenjualan
      */
     public GUILaporanPenjualan() {
         initComponents();
+    }
+    
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (ctrl != null) {
+            ctrl.closeConnection();
+        }
     }
 
     /**

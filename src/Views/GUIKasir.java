@@ -48,6 +48,14 @@ public class GUIKasir extends javax.swing.JFrame {
         totalhrg.addActionListener(this::totalhrgActionPerformed);
     }
     
+    @Override
+    public void dispose() {
+        super.dispose();
+        if (ctrl != null) {
+            ctrl.closeConnection();
+        }
+    }
+    
     private void clearInputFields() {
         idbrg.setText("");
         namabrg.setText("");
